@@ -1,0 +1,4 @@
+farm-haystack
+flask
+flask_cors
+numba
