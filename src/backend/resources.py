@@ -32,7 +32,7 @@ class Chatbot(Resource):
         args = parser.parse_args()
         question = args.get('question')
         if question is None:
-            return "Question is not provided", 400
+            return "Отсутсвуют необходимые данные", 400
         resp = self.bot.answer(question)
         try:
             return {"answers": [elem.to_dict() for elem in resp['answers']]}, 200
@@ -52,7 +52,7 @@ class Register(Resource):
         login = args.get('login')
         password = args.get('password')
         if login is None or password is None:
-            return "Credentials are not provided", 400
+            return "Отсутсвуют необходимые данные", 400
 
         with Session(engine) as session:
             user_id = session.query(User.id).filter_by(login=login).first()
@@ -82,7 +82,7 @@ class Login(Resource):
         login = args.get('login')
         password = args.get('password')
         if login is None or password is None:
-            return "Credentials are not provided", 400
+            return "Отсутсвуют необходимые данные", 400
 
         with Session(engine) as session:
             user = session.query(User.id, User.salt, User.hash).filter_by(login=login).first()
@@ -103,7 +103,7 @@ class History(Resource):
         if user is None:
             return "Необходима авторизация", 401
         if query is None or answers is None:
-            return "Not all args are not provided", 400
+            return "Отсутсвуют необходимые данные", 400
 
         with Session(engine) as session:
             found = session.query(User.id).filter_by(id=user).first()
@@ -123,7 +123,7 @@ class History(Resource):
     def get(self):
         user = request.args.get('user_id')
         if user is None:
-            return "User id is not provided", 400
+            return "Отсутсвуют необходимые данные", 400
         
         with Session(engine) as session:
             query = session.query(Question, History_DB).filter(Question.user == user).filter(Question.id == History_DB.question)
@@ -143,7 +143,7 @@ class History(Resource):
         question = args.get('question_id')
         
         if user is None or question is None:
-            return "Not all args provided", 400
+            return "Отсутсвуют необходимые данные", 400
         
         with Session(engine) as session:
             q = session.query(Question).filter(Question.id == question)
