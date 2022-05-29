@@ -147,7 +147,7 @@ class History(Resource):
         
         with Session(engine) as session:
             q = session.query(Question).filter(Question.id == question)
-            if q.first() is None:
+            if q.first() is None or q.first().user != user:
                 return "Вопрос не найден", 404
             q.delete()
             ans = session.query(History_DB).filter(History_DB.question == question)
